@@ -15,6 +15,9 @@
     background-color: white;
     font-size: 15px;
 }
+.link{
+    text-decoration-line: none;
+}
 .cal{
     width: 90%;
     margin: 0 auto;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import './index.css'
 
 const ERR = '请检查算式是否符合规范！';
@@ -49,7 +50,7 @@ class App extends Component {
                 }
                 break;
             case '=':
-                if (!isClickEqual &&canDoClickOperator) {
+                if (!isClickEqual && canDoClickOperator) {
                     let val = this.cal(tempText);
                     if (!isFinite(val)) {
                         alert(ERR);
@@ -62,6 +63,9 @@ class App extends Component {
                     isClickEqual = true;
                 }
                 break;
+            // case 'his':
+            //
+            //     break;
             default:
                 if (canDoClickNum) {
                     tempText += itemText;
@@ -118,9 +122,12 @@ class App extends Component {
             {value: 4, text: 4,}, {value: 5, text: 5,}, {value: 6, text: 6,}, {value: '+', text: ' + ',},
             {value: 7, text: 7,}, {value: 8, text: 8,}, {value: 9, text: 9,}, {value: '-', text: ' - ',},
             {value: '.', text: '.',}, {value: 0, text: 0,}, {value: '×', text: ' × ',}, {value: '÷', text: ' ÷ ',},
-            {value: '=', text: ' = ',}, {value: 'clear', text: '清空',},];
+            {value: '=', text: ' = ',}, {value: 'clear', text: '清空',},{value:'his',text:'历史记录'}];
 
         const ele = colums.map(function (value, index, array) {
+            if(value.value === 'his'){
+                return <button  className='btn'><Link className='link' to={'/history'}>{value.text}</Link></button>
+            }
             return <button key={index} onClick={self.handleClick.bind(self, value)}
                            className='btn'>{value.text}</button>
         });
