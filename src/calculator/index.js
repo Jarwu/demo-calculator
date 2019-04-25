@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
 import './index.css'
+import API from '../service/api'
 
 const ERR = '请检查算式是否符合规范！';
+
 let isClickEqual = false;
 let canDoClickOperator = true;
 let canDoClickNum = true;
+
+const colums = [{value: 1, text: 1,}, {value: 2, text: 2,}, {value: 3, text: 3,}, {value: 'back', text: '删除',},
+    {value: 4, text: 4,}, {value: 5, text: 5,}, {value: 6, text: 6,}, {value: '+', text: ' + ',},
+    {value: 7, text: 7,}, {value: 8, text: 8,}, {value: 9, text: 9,}, {value: '-', text: ' - ',},
+    {value: '.', text: '.',}, {value: 0, text: 0,}, {value: '×', text: ' × ',}, {value: '÷', text: ' ÷ ',},
+    {value: '=', text: ' = ',}, {value: 'clear', text: '清空',}, {value: 'his', text: '历史记录'}];
 
 class App extends Component {
     constructor(props) {
@@ -15,6 +23,17 @@ class App extends Component {
         }
     }
 
+
+    add=(data)=>{
+        fetch(API.history_add, {
+            method: 'POST',
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            // mode: 'no-cors', // no-cors, cors, *same-origin
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        });
+    };
 
     handleClick = (e) => {
         const {inputValue} = this.state;
@@ -56,6 +75,14 @@ class App extends Component {
                         alert(ERR);
                         break;
                     }
+
+
+                    let data = {
+                        his:tempText,
+                        res:val,
+                    };
+                    this.add(data);
+
                     tempText = tempText + itemText + val;
 
                     canDoClickOperator = false;
@@ -63,9 +90,6 @@ class App extends Component {
                     isClickEqual = true;
                 }
                 break;
-            // case 'his':
-            //
-            //     break;
             default:
                 if (canDoClickNum) {
                     tempText += itemText;
@@ -110,6 +134,7 @@ class App extends Component {
                 sum += parseFloat(arr[i]);
             }
         }
+
         return sum
     };
 
@@ -118,15 +143,9 @@ class App extends Component {
         let self = this;
         const {inputValue} = this.state;
 
-        const colums = [{value: 1, text: 1,}, {value: 2, text: 2,}, {value: 3, text: 3,}, {value: 'back', text: '删除',},
-            {value: 4, text: 4,}, {value: 5, text: 5,}, {value: 6, text: 6,}, {value: '+', text: ' + ',},
-            {value: 7, text: 7,}, {value: 8, text: 8,}, {value: 9, text: 9,}, {value: '-', text: ' - ',},
-            {value: '.', text: '.',}, {value: 0, text: 0,}, {value: '×', text: ' × ',}, {value: '÷', text: ' ÷ ',},
-            {value: '=', text: ' = ',}, {value: 'clear', text: '清空',},{value:'his',text:'历史记录'}];
-
-        const ele = colums.map(function (value, index, array) {
-            if(value.value === 'his'){
-                return <button  className='btn'><Link className='link' to={'/history'}>{value.text}</Link></button>
+        const ele = colums.map(function (value, index) {
+            if (value.value === 'his') {
+                return <button key={index} className='btn'><Link className='link' to={'/history'}>{value.text}</Link></button>
             }
             return <button key={index} onClick={self.handleClick.bind(self, value)}
                            className='btn'>{value.text}</button>
