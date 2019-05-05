@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-import './index.css'
+import './history.css'
 import API from '../service/api'
 
 class index extends Component {
@@ -23,23 +23,47 @@ class index extends Component {
             headers: new Headers({
                 'Content-Type': 'application/json'
             })
-        }).then( (res)=> {
+        }).then((res) => {
             return res.json();
-        }).then( (data)=> {
-            this.setState({
-                data:data.res
+        }).then((data) => {
+                this.setState({
+                    data: data.res
+                })
+        });
+    };
+
+    onDelete = (data) => {
+        fetch(API.history_delete, {
+            method: 'DELETE',
+            body: JSON.stringify(data.id),
+            // mode: 'no-cors', // no-cors, cors, *same-origin
+            headers: new Headers({
+                'Content-Type': 'application/json'
             })
+        }).then((res) => {
+            return res.json();
+        }).then((data) => {
+            if (data.code === 200) {
+                this.listPage();
+            }
         });
     };
 
     render() {
         const {data} = this.state;
-        console.log(data);
-        let li ;
-        if(data) {
+        let self = this;
+        let li;
+        if (data.length !==0) {
             li = data.map(function (item, index) {
-                return <div key={index} className='item'>{`${index+1}. ${item.his} = ${item.res}`}</div>
+                return <div key={index} className='item'>
+                    {`${index + 1}. ${item.his} = ${item.res}`}
+                    <span className='delete' onClick={self.onDelete.bind(self, item)}>
+                        删除
+                    </span>
+                </div>
             });
+        } else {
+            li = '----暂无数据----'
         }
         return (
             <div className='main'>

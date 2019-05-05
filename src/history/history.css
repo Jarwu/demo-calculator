@@ -7,6 +7,9 @@
     background-color: white;
     font-size: 15px;
 }
+.btn:hover{
+    background: #61dafb;
+}
 .link{
     text-decoration-line: none;
 }
@@ -16,5 +19,18 @@
 .body{
     margin: 20px;
     padding: 20px;
-    border: 1px solid black;
+}
+
+.item{
+    margin: 5px;
+    padding: 5px;
+    border-bottom: 1px solid black;
+}
+
+.item:hover{
+    background: #61dafb;
+    cursor: pointer;
+}
+.delete{
+    margin-left: 370px;
 }

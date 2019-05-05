@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-import './index.css'
+import './calculator.css'
 import API from '../service/api'
 
 const ERR = '请检查算式是否符合规范！';
@@ -148,7 +148,7 @@ class App extends Component {
                 return <button key={index} className='btn'><Link className='link' to={'/history'}>{value.text}</Link></button>
             }
             return <button key={index} onClick={self.handleClick.bind(self, value)}
-                           className='btn'>{value.text}</button>
+                           className='btn_cal'>{value.text}</button>
         });
 
 
